@@ -1,121 +1,101 @@
 import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
 import './App.css'
+import { MetricCard } from './components/MetricCard'
+import { ProcessTable } from './components/ProcessTable'
+import { SettingsModal } from './components/SettingsModal'
+import { processes } from './data/processes'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [query, setQuery] = useState('')
+  const [darkMode, setDarkMode] = useState(true)
+  const [settingsOpen, setSettingsOpen] = useState(false)
+  const [compactMode, setCompactMode] = useState(false)
+
+  // Intentional benchmark defect:
+  // search is case-sensitive and repeated unnecessarily.
+  const visibleProcesses = processes.filter((process) =>
+    process.name.includes(query),
+  )
+
+  const processCount = processes.filter((process) =>
+    process.name.includes(query),
+  ).length
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
+    <main className={darkMode ? 'app dark' : 'app light'}>
+      <header className="topbar">
         <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
+          <p className="eyebrow">LOCAL MOCK TELEMETRY</p>
+          <h1>System Monitor</h1>
         </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
+
+        <div className="header-actions">
+          <button
+            type="button"
+            onClick={() => setDarkMode((value) => !value)}
+          >
+            {darkMode ? 'Light mode' : 'Dark mode'}
+          </button>
+
+          <button type="button" onClick={() => setSettingsOpen(true)}>
+            Settings
+          </button>
+        </div>
+      </header>
+
+      <section className="metrics-grid" aria-label="System metrics">
+        <MetricCard
+          label="CPU"
+          value={75}
+          warningAt={75}
+          criticalAt={90}
+        />
+        <MetricCard
+          label="Memory"
+          value={68}
+          warningAt={70}
+          criticalAt={90}
+        />
+        <MetricCard
+          label="Disk"
+          value={82}
+          warningAt={80}
+          criticalAt={95}
+        />
+        <MetricCard
+          label="Network"
+          value={412}
+          suffix=" Mbps"
+          warningAt={700}
+          criticalAt={900}
+        />
       </section>
 
-      <div className="ticks"></div>
+      <section className="process-panel">
+        <div className="panel-heading">
+          <div>
+            <h2>Processes</h2>
+            <p>{processCount} visible processes</p>
+          </div>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
+          <input
+            type="search"
+            placeholder="Search processes"
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+          />
         </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
+
+        <ProcessTable rows={visibleProcesses} compact={compactMode} />
       </section>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+      <SettingsModal
+        open={settingsOpen}
+        onClose={() => setSettingsOpen(false)}
+        compactMode={compactMode}
+        onCompactModeChange={setCompactMode}
+      />
+    </main>
   )
 }
 
