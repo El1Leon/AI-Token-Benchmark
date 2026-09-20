@@ -1,0 +1,94 @@
+# Dependencies
+node_modules/
+.pnp/
+.pnp.*
+
+# Build and test output
+dist/
+build/
+coverage/
+.nyc_output/
+.vite/
+.turbo/
+*.tsbuildinfo
+
+# Environment files and secrets
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# Local credentials and private keys
+.npmrc
+.netrc
+.pypirc
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.cer
+*.der
+.aws/
+.azure/
+.ssh/
+.gnupg/
+credentials.json
+service-account*.json
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# macOS filesystem metadata
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Editors and IDEs
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+*.swp
+*.swo
+*~
+
+# Temporary files and caches
+.cache/
+.tmp/
+tmp/
+temp/
+.eslintcache
+
+# Private local AI-agent state. Public benchmark prompts, instructions, and
+# sanitized configurations should use normal project directories instead.
+.codex/sessions/
+.codex/state/
+.codex/cache/
+.codex/logs/
+.codex/transcripts/
+.codex/memories/
+.codex/auth.json
+.claude/projects/
+.claude/sessions/
+.claude/state/
+.claude/cache/
+.claude/logs/
+.claude/transcripts/
+.claude/memory/
+.claude/settings.local.json
+.claude/credentials.json
+.mcp.json
+.mcp.local.json
+.mcp/credentials.json
+.mcp/state/
+.mcp/cache/
+agent-state/
+agent-cache/
