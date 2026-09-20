@@ -4,6 +4,10 @@
 
 For a public repository, use GitHub's private vulnerability-reporting workflow when it is enabled. Until then, do not post exploitable details, credentials, or personal data in a public issue. Open a minimal issue asking for a private reporting channel if necessary.
 
+## Supported scope
+
+Security reports are reviewed for the current `main` branch and current benchmark framework. Historical benchmark tags are preserved as reproducibility evidence and are not retroactively rewritten.
+
 ## Submission safety
 
 Benchmark submissions must be sanitized. Never commit API keys, tokens, passwords, private keys, `.env` files, cookies, credentials, private provider data, local AI-agent state, or raw session transcripts.

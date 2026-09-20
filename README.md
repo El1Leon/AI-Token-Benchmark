@@ -41,15 +41,29 @@ The framework can record runs from Codex, Claude Code, Antigravity, Grok, and fu
 
 ## Reproducibility
 
-Use the recorded starting tag for System Monitor v1:
+Keep the current framework checkout and create a separate, disposable worktree for the historical System Monitor v1 fixture:
 
 ```bash
 git clone <repository-url>
 cd AI-Benchmark
-git reset --hard benchmark-baseline
+git worktree add --detach ../ai-benchmark-system-monitor-v1 benchmark-baseline
 ```
 
-`git reset --hard` discards uncommitted work. Do not run it unless that is intentional. The historical baseline predates later repository and portfolio documentation.
+The framework stays on `main`; the temporary worktree contains the exact historical fixture. Give the agent the unchanged [System Monitor v1 prompt](prompts/system-monitor-v1.md), then work in `../ai-benchmark-system-monitor-v1/system-monitor`. Before the run, verify the fixture from the framework checkout:
+
+```bash
+nvm exec 22.23.1 npm --prefix ../ai-benchmark-system-monitor-v1/system-monitor ci
+nvm exec 22.23.1 node scripts/verify-system-monitor-baseline.mjs \
+  --fixture ../ai-benchmark-system-monitor-v1/system-monitor
+```
+
+Collect the agent result and validation evidence before removing the worktree:
+
+```bash
+git worktree remove ../ai-benchmark-system-monitor-v1
+```
+
+`git worktree remove` removes that worktree, so use it only after preserving the run evidence. `git reset --hard benchmark-baseline` remains an advanced destructive option, not the recommended workflow. The historical baseline intentionally predates the portfolio framework.
 
 For a run, record the starting commit/tag, prompt version, agent/model/version, enabled tools and plugins, environment, commands, and final diff. The canonical workload is immutable for v1 comparisons.
 
@@ -72,12 +86,12 @@ For a run, record the starting commit/tag, prompt version, agent/model/version, 
 3. Apply the fairness policy and record all meaningful constraints.
 4. Run the validation commands and preserve a sanitized result record.
 
-The fixture requires Node 22. From `system-monitor/`:
+The fixture was validated with Node `22.23.1` and npm `10.9.8`. The root [`.nvmrc`](.nvmrc) pins the tested Node version; `system-monitor/package.json` accepts compatible Node 22 and npm 10 releases. From `system-monitor/`:
 
 ```bash
-npm ci
-npm run lint
-npm run build
+nvm exec 22.23.1 npm ci
+nvm exec 22.23.1 npm run lint
+nvm exec 22.23.1 npm run build
 ```
 
 ## Validation
@@ -85,10 +99,10 @@ npm run build
 The normal fixture tests intentionally fail at the baseline. Verify that expected condition without masking arbitrary failures:
 
 ```bash
-node scripts/verify-system-monitor-baseline.mjs
+nvm exec 22.23.1 node scripts/verify-system-monitor-baseline.mjs
 ```
 
-CI runs that baseline verifier separately from lint and production build. A completed agent run should execute the fixture test suite normally and report its actual outcome.
+The verifier consumes Vitest's JSON report and requires exactly three tests: one pass and the two documented seeded failures. CI also executes its synthetic adversarial cases before strict baseline verification. A completed agent run should execute the fixture test suite normally and report its actual outcome.
 
 ## Results
 

@@ -6,11 +6,11 @@ Every result must declare what the agent could see and use. Equivalent constrain
 
 Record whether the agent had access to repository contents, tests, source comments, Git history, canonical prompt, network access, shell/browser tools, MCP servers, plugins, skills, memory, reasoning settings, agent/version, model/version, and any additional instructions.
 
-## System Monitor v1 limitation
+## System Monitor v1: guided repair workload
 
-The current fixture's source comments and tests reveal some seeded defects. This is known solution leakage. For a fair v1 comparison, all agents should receive the same visibility into these files and the result should state that condition.
+System Monitor v1 is a guided implementation/debugging workload, not a blind defect-discovery benchmark. Its canonical prompt enumerates required outcomes, while source comments and tests reveal some seeded defects. For a fair v1 comparison, all agents should receive the same visibility into these materials and the result should state that condition.
 
-A future benchmark revision may separate public challenge code from a validation harness to reduce leakage. That would be a new version, not a rewrite of v1 evidence.
+A future System Monitor v2 may remove explicit defect labels, reduce source/test leakage, use held-out validation, and better separate diagnosis from implementation. That would be a new version, not a rewrite of v1 evidence.
 
 ## Configuration discipline
 
