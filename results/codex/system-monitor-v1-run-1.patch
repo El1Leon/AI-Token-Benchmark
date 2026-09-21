@@ -1,0 +1,614 @@
+diff --git a/system-monitor/src/App.css b/system-monitor/src/App.css
+index f90339d..001adc3 100644
+--- a/system-monitor/src/App.css
++++ b/system-monitor/src/App.css
+@@ -1,184 +1,95 @@
+-.counter {
+-  font-size: 16px;
+-  padding: 5px 10px;
+-  border-radius: 5px;
+-  color: var(--accent);
+-  background: var(--accent-bg);
+-  border: 2px solid transparent;
+-  transition: border-color 0.3s;
+-  margin-bottom: 24px;
+-
+-  &:hover {
+-    border-color: var(--accent-border);
+-  }
+-  &:focus-visible {
+-    outline: 2px solid var(--accent);
+-    outline-offset: 2px;
+-  }
++.app {
++  --page: #f4f7fb;
++  --surface: #ffffff;
++  --surface-muted: #edf2f7;
++  --text: #172033;
++  --muted: #60708a;
++  --border: #d5ddea;
++  --accent: #2563eb;
++  --accent-contrast: #ffffff;
++  --warning: #b45309;
++  --warning-bg: #fff7ed;
++  --critical: #b42318;
++  --critical-bg: #fef2f2;
++  min-height: 100svh;
++  box-sizing: border-box;
++  padding: 2rem;
++  color: var(--text);
++  background: var(--page);
+ }
+ 
+-.hero {
+-  position: relative;
+-
+-  .base,
+-  .framework,
+-  .vite {
+-    inset-inline: 0;
+-    margin: 0 auto;
+-  }
+-
+-  .base {
+-    width: 170px;
+-    position: relative;
+-    z-index: 0;
+-  }
+-
+-  .framework,
+-  .vite {
+-    position: absolute;
+-  }
+-
+-  .framework {
+-    z-index: 1;
+-    top: 34px;
+-    height: 28px;
+-    transform: perspective(2000px) rotateZ(300deg) rotateX(44deg) rotateY(39deg)
+-      scale(1.4);
+-  }
+-
+-  .vite {
+-    z-index: 0;
+-    top: 107px;
+-    height: 26px;
+-    width: auto;
+-    transform: perspective(2000px) rotateZ(300deg) rotateX(40deg) rotateY(39deg)
+-      scale(0.8);
+-  }
++.app.dark {
++  --page: #0b1220;
++  --surface: #121c2e;
++  --surface-muted: #1b2940;
++  --text: #e8eef9;
++  --muted: #a7b4c9;
++  --border: #30415e;
++  --accent: #7db0ff;
++  --accent-contrast: #0b1220;
++  --warning: #fbbf24;
++  --warning-bg: #3a2b0d;
++  --critical: #fca5a5;
++  --critical-bg: #3a171d;
+ }
+ 
+-#center {
+-  display: flex;
+-  flex-direction: column;
+-  gap: 25px;
+-  place-content: center;
+-  place-items: center;
+-  flex-grow: 1;
+-
+-  @media (max-width: 1024px) {
+-    padding: 32px 20px 24px;
+-    gap: 18px;
+-  }
+-}
+-
+-#next-steps {
+-  display: flex;
+-  border-top: 1px solid var(--border);
+-  text-align: left;
+-
+-  & > div {
+-    flex: 1 1 0;
+-    padding: 32px;
+-    @media (max-width: 1024px) {
+-      padding: 24px 20px;
+-    }
+-  }
+-
+-  .icon {
+-    margin-bottom: 16px;
+-    width: 22px;
+-    height: 22px;
+-  }
+-
+-  @media (max-width: 1024px) {
+-    flex-direction: column;
+-    text-align: center;
+-  }
+-}
+-
+-#docs {
+-  border-right: 1px solid var(--border);
+-
+-  @media (max-width: 1024px) {
+-    border-right: none;
+-    border-bottom: 1px solid var(--border);
+-  }
+-}
+-
+-#next-steps ul {
+-  list-style: none;
+-  padding: 0;
+-  display: flex;
+-  gap: 8px;
+-  margin: 32px 0 0;
+-
+-  .logo {
+-    height: 18px;
+-  }
+-
+-  a {
+-    color: var(--text-h);
+-    font-size: 16px;
+-    border-radius: 6px;
+-    background: var(--social-bg);
+-    display: flex;
+-    padding: 6px 12px;
+-    align-items: center;
+-    gap: 8px;
+-    text-decoration: none;
+-    transition: box-shadow 0.3s;
+-
+-    &:hover {
+-      box-shadow: var(--shadow);
+-    }
+-    .button-icon {
+-      height: 18px;
+-      width: 18px;
+-    }
+-  }
+-
+-  @media (max-width: 1024px) {
+-    margin-top: 20px;
+-    flex-wrap: wrap;
+-    justify-content: center;
+-
+-    li {
+-      flex: 1 1 calc(50% - 8px);
+-    }
+-
+-    a {
+-      width: 100%;
+-      justify-content: center;
+-      box-sizing: border-box;
+-    }
+-  }
+-}
+-
+-#spacer {
+-  height: 88px;
+-  border-top: 1px solid var(--border);
+-  @media (max-width: 1024px) {
+-    height: 48px;
+-  }
+-}
+-
+-.ticks {
+-  position: relative;
+-  width: 100%;
+-
+-  &::before,
+-  &::after {
+-    content: '';
+-    position: absolute;
+-    top: -4.5px;
+-    border: 5px solid transparent;
+-  }
+-
+-  &::before {
+-    left: 0;
+-    border-left-color: var(--border);
+-  }
+-  &::after {
+-    right: 0;
+-    border-right-color: var(--border);
+-  }
++.topbar, .panel-heading, .modal-header, .setting-row { display: flex; align-items: center; }
++.topbar, .panel-heading { justify-content: space-between; gap: 1rem; }
++.eyebrow { margin: 0 0 .25rem; color: var(--accent); font-size: .75rem; font-weight: 700; letter-spacing: .12em; }
++.topbar h1 { margin: 0; font-size: clamp(1.8rem, 5vw, 2.6rem); }
++.header-actions { display: flex; flex-wrap: wrap; gap: .75rem; }
++button, input { font: inherit; }
++button { min-height: 2.5rem; padding: .5rem .8rem; border: 1px solid var(--border); border-radius: .4rem; color: var(--text); background: var(--surface); cursor: pointer; }
++button:hover { border-color: var(--accent); }
++button:focus-visible, input:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
++.metrics-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; margin: 2rem 0; }
++.metric-card, .process-panel, .modal { border: 1px solid var(--border); border-radius: .75rem; background: var(--surface); box-shadow: 0 8px 24px rgb(15 23 42 / .08); }
++.metric-card { padding: 1rem; display: grid; gap: .3rem; }
++.metric-card strong { font-size: 1.7rem; }
++.metric-card small, .panel-heading p, .hint { color: var(--muted); }
++.metric-card.warning { border-color: var(--warning); background: var(--warning-bg); }
++.metric-card.critical { border-color: var(--critical); background: var(--critical-bg); }
++.process-panel { padding: 1.25rem; }
++.panel-heading { margin-bottom: 1rem; }
++.panel-heading h2 { margin: 0; }
++.panel-heading p { margin: .25rem 0 0; }
++input[type='search'] { width: min(100%, 20rem); min-height: 2.5rem; padding: .5rem .7rem; box-sizing: border-box; border: 1px solid var(--border); border-radius: .4rem; color: var(--text); background: var(--surface); }
++.table-wrapper { overflow-x: auto; }
++table { width: 100%; border-collapse: collapse; text-align: left; }
++th, td { padding: .85rem .7rem; border-bottom: 1px solid var(--border); white-space: nowrap; }
++th { color: var(--muted); font-size: .82rem; text-transform: uppercase; letter-spacing: .04em; }
++th button { width: 100%; min-height: auto; padding: 0; border: 0; border-radius: 0; color: inherit; background: transparent; text-align: left; font: inherit; }
++th button:hover { color: var(--accent); }
++table.compact th, table.compact td { padding-block: .4rem; }
++.status-pill { display: inline-block; padding: .2rem .5rem; border-radius: 999px; font-size: .8rem; font-weight: 700; background: var(--surface-muted); }
++.status-pill.warning { color: var(--warning); background: var(--warning-bg); }
++.empty-state { padding: 2rem; color: var(--muted); text-align: center; }
++.modal-backdrop { position: fixed; z-index: 1; inset: 0; display: grid; place-items: center; padding: 1rem; background: rgb(0 0 0 / .5); }
++.modal { width: min(100%, 30rem); padding: 1.25rem; }
++.modal-header { justify-content: space-between; gap: 1rem; }
++.modal-header h2 { margin: 0; }
++.icon-button { width: 2.5rem; padding: 0; font-size: 1.5rem; line-height: 1; }
++.setting-row { justify-content: space-between; gap: 1rem; margin: 1.5rem 0 1rem; }
++.setting-row input { width: 1.2rem; height: 1.2rem; accent-color: var(--accent); }
++.hint { margin: 0; }
++
++@media (max-width: 760px) {
++  .app { padding: 1rem; }
++  .topbar, .panel-heading { align-items: stretch; flex-direction: column; }
++  .header-actions { width: 100%; }
++  .header-actions button { flex: 1; }
++  .metrics-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 1rem 0; }
++  .process-panel { padding: 1rem; }
++  input[type='search'] { width: 100%; }
++  .table-wrapper { overflow: visible; }
++  table, tbody, tr, td { display: block; }
++  thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
++  table { border: 0; }
++  tbody { display: grid; gap: .75rem; }
++  tbody tr { padding: .6rem .8rem; border: 1px solid var(--border); border-radius: .5rem; background: var(--surface-muted); }
++  tbody td { display: flex; justify-content: space-between; gap: 1rem; padding: .35rem 0; border: 0; white-space: normal; text-align: right; }
++  table.compact tbody td { padding-block: .15rem; }
++  tbody td::before { content: attr(data-label); color: var(--muted); font-weight: 700; text-align: left; }
++  tbody .empty-state { display: block; text-align: center; }
++  tbody .empty-state::before { content: none; }
+ }
+diff --git a/system-monitor/src/App.tsx b/system-monitor/src/App.tsx
+index e399215..02d1fcf 100644
+--- a/system-monitor/src/App.tsx
++++ b/system-monitor/src/App.tsx
+@@ -1,4 +1,4 @@
+-import { useState } from 'react'
++import { useMemo, useState } from 'react'
+ import './App.css'
+ import { MetricCard } from './components/MetricCard'
+ import { ProcessTable } from './components/ProcessTable'
+@@ -11,15 +11,15 @@ function App() {
+   const [settingsOpen, setSettingsOpen] = useState(false)
+   const [compactMode, setCompactMode] = useState(false)
+ 
+-  // Intentional benchmark defect:
+-  // search is case-sensitive and repeated unnecessarily.
+-  const visibleProcesses = processes.filter((process) =>
+-    process.name.includes(query),
+-  )
++  const visibleProcesses = useMemo(() => {
++    const normalizedQuery = query.trim().toLocaleLowerCase()
+ 
+-  const processCount = processes.filter((process) =>
+-    process.name.includes(query),
+-  ).length
++    return normalizedQuery
++      ? processes.filter((process) =>
++          process.name.toLocaleLowerCase().includes(normalizedQuery),
++        )
++      : processes
++  }, [query])
+ 
+   return (
+     <main className={darkMode ? 'app dark' : 'app light'}>
+@@ -33,11 +33,17 @@ function App() {
+           <button
+             type="button"
+             onClick={() => setDarkMode((value) => !value)}
++            aria-label={`Switch to ${darkMode ? 'light' : 'dark'} mode`}
+           >
+             {darkMode ? 'Light mode' : 'Dark mode'}
+           </button>
+ 
+-          <button type="button" onClick={() => setSettingsOpen(true)}>
++          <button
++            type="button"
++            onClick={() => setSettingsOpen(true)}
++            aria-haspopup="dialog"
++            aria-expanded={settingsOpen}
++          >
+             Settings
+           </button>
+         </div>
+@@ -75,11 +81,12 @@ function App() {
+         <div className="panel-heading">
+           <div>
+             <h2>Processes</h2>
+-            <p>{processCount} visible processes</p>
++            <p>{visibleProcesses.length} visible processes</p>
+           </div>
+ 
+           <input
+             type="search"
++            aria-label="Search processes"
+             placeholder="Search processes"
+             value={query}
+             onChange={(event) => setQuery(event.target.value)}
+diff --git a/system-monitor/src/components/MetricCard.tsx b/system-monitor/src/components/MetricCard.tsx
+index 19a7a88..3c7db83 100644
+--- a/system-monitor/src/components/MetricCard.tsx
++++ b/system-monitor/src/components/MetricCard.tsx
+@@ -15,11 +15,9 @@ export function MetricCard({
+ }: MetricCardProps) {
+   let status = 'normal'
+ 
+-  // Intentional benchmark defect:
+-  // exactly warningAt is incorrectly treated as normal.
+-  if (value > criticalAt) {
++  if (value >= criticalAt) {
+     status = 'critical'
+-  } else if (value > warningAt) {
++  } else if (value >= warningAt) {
+     status = 'warning'
+   }
+ 
+diff --git a/system-monitor/src/components/ProcessTable.tsx b/system-monitor/src/components/ProcessTable.tsx
+index 8249ee9..64e45bf 100644
+--- a/system-monitor/src/components/ProcessTable.tsx
++++ b/system-monitor/src/components/ProcessTable.tsx
+@@ -1,4 +1,4 @@
+-import { useState } from 'react'
++import { useMemo, useState } from 'react'
+ import type { ProcessRow } from '../data/processes'
+ 
+ type SortKey = 'pid' | 'name' | 'cpu' | 'memory'
+@@ -12,9 +12,7 @@ export function ProcessTable({ rows, compact }: ProcessTableProps) {
+   const [sortKey, setSortKey] = useState<SortKey>('cpu')
+   const [ascending, setAscending] = useState(false)
+ 
+-  // Intentional benchmark defect:
+-  // sort() mutates the array passed in through props.
+-  const sortedRows = rows.sort((a, b) => {
++  const sortedRows = useMemo(() => [...rows].sort((a, b) => {
+     const left = a[sortKey]
+     const right = b[sortKey]
+ 
+@@ -27,11 +25,11 @@ export function ProcessTable({ rows, compact }: ProcessTableProps) {
+     return ascending
+       ? Number(left) - Number(right)
+       : Number(right) - Number(left)
+-  })
++  }), [ascending, rows, sortKey])
+ 
+   function handleSort(key: SortKey) {
+     if (sortKey === key) {
+-      setAscending(!ascending)
++      setAscending((value) => !value)
+     } else {
+       setSortKey(key)
+       setAscending(true)
+@@ -43,46 +41,51 @@ export function ProcessTable({ rows, compact }: ProcessTableProps) {
+       <table className={compact ? 'compact' : ''}>
+         <thead>
+           <tr>
+-            <th>
+-              <button type="button" onClick={() => handleSort('pid')}>
++            <th aria-sort={sortKey === 'pid' ? (ascending ? 'ascending' : 'descending') : undefined}>
++              <button type="button" onClick={() => handleSort('pid')} aria-label="Sort by PID">
+                 PID
+               </button>
+             </th>
+-            <th>
+-              <button type="button" onClick={() => handleSort('name')}>
++            <th aria-sort={sortKey === 'name' ? (ascending ? 'ascending' : 'descending') : undefined}>
++              <button type="button" onClick={() => handleSort('name')} aria-label="Sort by process name">
+                 Process
+               </button>
+             </th>
+-            <th>
+-              <button type="button" onClick={() => handleSort('cpu')}>
++            <th aria-sort={sortKey === 'cpu' ? (ascending ? 'ascending' : 'descending') : undefined}>
++              <button type="button" onClick={() => handleSort('cpu')} aria-label="Sort by CPU usage">
+                 CPU %
+               </button>
+             </th>
+-            <th>
+-              <button type="button" onClick={() => handleSort('memory')}>
++            <th aria-sort={sortKey === 'memory' ? (ascending ? 'ascending' : 'descending') : undefined}>
++              <button type="button" onClick={() => handleSort('memory')} aria-label="Sort by memory usage">
+                 Memory MB
+               </button>
+             </th>
+-            <th>User</th>
+-            <th>Status</th>
++            <th scope="col">User</th>
++            <th scope="col">Status</th>
+           </tr>
+         </thead>
+ 
+         <tbody>
+           {sortedRows.map((process) => (
+             <tr key={process.pid}>
+-              <td>{process.pid}</td>
+-              <td>{process.name}</td>
+-              <td>{process.cpu.toFixed(1)}</td>
+-              <td>{process.memory}</td>
+-              <td>{process.user}</td>
+-              <td>
++              <td data-label="PID">{process.pid}</td>
++              <td data-label="Process">{process.name}</td>
++              <td data-label="CPU">{process.cpu.toFixed(1)}%</td>
++              <td data-label="Memory">{process.memory} MB</td>
++              <td data-label="User">{process.user}</td>
++              <td data-label="Status">
+                 <span className={`status-pill ${process.status}`}>
+                   {process.status}
+                 </span>
+               </td>
+             </tr>
+           ))}
++          {sortedRows.length === 0 && (
++            <tr>
++              <td className="empty-state" colSpan={6}>No processes match your search.</td>
++            </tr>
++          )}
+         </tbody>
+       </table>
+     </div>
+diff --git a/system-monitor/src/components/SettingsModal.tsx b/system-monitor/src/components/SettingsModal.tsx
+index 18cd6b6..da12503 100644
+--- a/system-monitor/src/components/SettingsModal.tsx
++++ b/system-monitor/src/components/SettingsModal.tsx
+@@ -1,3 +1,5 @@
++import { useEffect, useId, useRef } from 'react'
++
+ type SettingsModalProps = {
+   open: boolean
+   onClose: () => void
+@@ -11,18 +13,59 @@ export function SettingsModal({
+   compactMode,
+   onCompactModeChange,
+ }: SettingsModalProps) {
++  const closeButtonRef = useRef<HTMLButtonElement>(null)
++  const previousFocusRef = useRef<HTMLElement | null>(null)
++  const titleId = useId()
++  const descriptionId = useId()
++
++  useEffect(() => {
++    if (!open) return
++
++    previousFocusRef.current = document.activeElement instanceof HTMLElement
++      ? document.activeElement
++      : null
++    closeButtonRef.current?.focus()
++
++    return () => previousFocusRef.current?.focus()
++  }, [open])
++
+   if (!open) {
+     return null
+   }
+ 
+   return (
+-    <div className="modal-backdrop">
+-      <div className="modal">
++    <div className="modal-backdrop" onMouseDown={(event) => {
++      if (event.target === event.currentTarget) onClose()
++    }}>
++      <div
++        className="modal"
++        role="dialog"
++        aria-modal="true"
++        aria-labelledby={titleId}
++        aria-describedby={descriptionId}
++        onKeyDown={(event) => {
++          if (event.key === 'Escape') onClose()
++          if (event.key !== 'Tab') return
++
++          const focusable = Array.from(event.currentTarget.querySelectorAll<HTMLElement>(
++            'button:not([disabled]), input:not([disabled])',
++          ))
++          const first = focusable[0]
++          const last = focusable.at(-1)
++          if (!first || !last) return
++          if (event.shiftKey && document.activeElement === first) {
++            event.preventDefault()
++            last.focus()
++          } else if (!event.shiftKey && document.activeElement === last) {
++            event.preventDefault()
++            first.focus()
++          }
++        }}
++      >
+         <div className="modal-header">
+-          <h2>Dashboard Settings</h2>
++          <h2 id={titleId}>Dashboard Settings</h2>
+ 
+-          {/* Intentional benchmark defect: no accessible name */}
+-          <button type="button" className="icon-button" onClick={onClose}>
++          <button ref={closeButtonRef} type="button" className="icon-button" aria-label="Close settings" onClick={onClose}>
+             ×
+           </button>
+         </div>
+@@ -36,7 +79,7 @@ export function SettingsModal({
+           />
+         </label>
+ 
+-        <p className="hint">
++        <p id={descriptionId} className="hint">
+           Changes apply locally to this mock dashboard.
+         </p>
+       </div>
+diff --git a/system-monitor/src/test/App.test.tsx b/system-monitor/src/test/App.test.tsx
+index 68fc320..d506f91 100644
+--- a/system-monitor/src/test/App.test.tsx
++++ b/system-monitor/src/test/App.test.tsx
+@@ -2,6 +2,7 @@ import { fireEvent, render, screen } from '@testing-library/react'
+ import { describe, expect, it } from 'vitest'
+ import App from '../App'
+ import { MetricCard } from '../components/MetricCard'
++import { ProcessTable } from '../components/ProcessTable'
+ 
+ describe('System Monitor benchmark fixture', () => {
+   it('renders the dashboard', () => {
+@@ -39,4 +40,50 @@ describe('System Monitor benchmark fixture', () => {
+ 
+     expect(container.querySelector('.metric-card')).toHaveClass('warning')
+   })
++
++  it('treats the critical threshold itself as critical', () => {
++    const { container } = render(
++      <MetricCard
++        label="CPU"
++        value={90}
++        warningAt={75}
++        criticalAt={90}
++      />,
++    )
++
++    expect(container.querySelector('.metric-card')).toHaveClass('critical')
++  })
++
++  it('opens an accessible settings dialog and returns focus when closed', () => {
++    render(<App />)
++    const settingsButton = screen.getByRole('button', { name: 'Settings' })
++    settingsButton.focus()
++    fireEvent.click(settingsButton)
++
++    expect(screen.getByRole('dialog', { name: 'Dashboard Settings' })).toBeInTheDocument()
++    expect(screen.getByRole('button', { name: 'Close settings' })).toHaveFocus()
++
++    fireEvent.keyDown(screen.getByRole('dialog'), { key: 'Escape' })
++    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
++    expect(settingsButton).toHaveFocus()
++  })
++
++  it('sorts a copy of process rows and communicates sorting state', () => {
++    render(<App />)
++    const cpuSort = screen.getByRole('button', { name: 'Sort by CPU usage' })
++
++    expect(cpuSort.closest('th')).toHaveAttribute('aria-sort', 'descending')
++    fireEvent.click(cpuSort)
++    expect(cpuSort.closest('th')).toHaveAttribute('aria-sort', 'ascending')
++  })
++
++  it('does not mutate the rows it receives while sorting', () => {
++    const rows = [
++      { pid: 1, name: 'First', cpu: 1, memory: 1, user: 'ed', status: 'running' as const },
++      { pid: 2, name: 'Second', cpu: 2, memory: 2, user: 'ed', status: 'running' as const },
++    ]
++
++    render(<ProcessTable rows={rows} compact={false} />)
++    expect(rows.map((row) => row.pid)).toEqual([1, 2])
++  })
+ })
