@@ -1,6 +1,6 @@
 # AI Token Benchmark
 
-AI Token Benchmark is a reproducible framework for observing how AI coding-agent configurations affect token-related signals and engineering outcomes under controlled software-engineering workloads.
+AI Token Benchmark is a reproducible, multiplatform framework for observing how AI coding-agent configurations affect token-related signals and engineering outcomes under controlled software-engineering workloads.
 
 It is designed to make configuration effects observable—not to create an unsupported universal leaderboard or claim exact billed-token counts. Each comparison should give agents the same repository state, benchmark prompt, requirements, starting defects, equivalent environment and tool constraints where practical, and validation criteria.
 
