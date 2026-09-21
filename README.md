@@ -1,8 +1,8 @@
-# AI-Benchmark
+# AI Token Benchmark
 
-AI-Benchmark is a reproducible benchmark framework for evaluating AI coding agents under controlled software-engineering workloads.
+AI Token Benchmark is a reproducible framework for observing how AI coding-agent configurations affect token-related signals and engineering outcomes under controlled software-engineering workloads.
 
-It is designed to make engineering behavior observable—not to create an unsupported universal leaderboard. Each comparison should give agents the same repository state, benchmark prompt, requirements, starting defects, equivalent environment and tool constraints where practical, and validation criteria.
+It is designed to make configuration effects observable—not to create an unsupported universal leaderboard or claim exact billed-token counts. Each comparison should give agents the same repository state, benchmark prompt, requirements, starting defects, equivalent environment and tool constraints where practical, and validation criteria.
 
 ## Overview
 
@@ -10,7 +10,7 @@ The first fixture is a deliberately defective React/TypeScript System Monitor ap
 
 ## Why this project exists
 
-AI coding-agent evaluations are often hard to reproduce: the prompt, tools, model settings, starting commit, or validation evidence are missing. This repository keeps those inputs explicit so results can be reviewed in context and extended responsibly.
+AI coding-agent setups can vary widely as skills, plugins, hooks, tools, and model settings change. Their effects are difficult to compare when the prompt, starting commit, configuration, or validation evidence is missing. This repository keeps those inputs explicit so results can be reviewed in context and extended responsibly.
 
 ## Benchmark philosophy
 
@@ -45,7 +45,7 @@ Keep the current framework checkout and create a separate, disposable worktree f
 
 ```bash
 git clone <repository-url>
-cd AI-Benchmark
+cd AI-Token-Benchmark
 git worktree add --detach ../ai-benchmark-system-monitor-v1 benchmark-baseline
 ```
 

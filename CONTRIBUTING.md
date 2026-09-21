@@ -1,6 +1,6 @@
 # Contributing
 
-Thank you for improving AI-Benchmark. Contributions should make a workload, result, or methodology easier to reproduce and review.
+Thank you for improving AI Token Benchmark. Contributions should make a workload, result, or methodology easier to reproduce and review.
 
 ## Ways to contribute
 
