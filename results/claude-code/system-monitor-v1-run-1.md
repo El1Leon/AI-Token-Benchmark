@@ -348,6 +348,29 @@ The repository methodology documents the benchmark's broader reproducibility and
 
 The completed Run 1 implementation was intentionally left as uncommitted changes in its detached worktree after the run was frozen so that it could be independently inspected before cleanup.
 
+## Preserved Patch Artifact
+
+The exact uncommitted implementation diff produced during this run is preserved as:
+
+`results/claude-code/system-monitor-v1-run-1.patch`
+
+SHA-256:
+
+`9b13ffaacab53927ef59716fe61eeaab9890497706c7d29db4eb4d786476274f`
+
+The patch contains changes to exactly six files:
+
+- `system-monitor/src/App.css`
+- `system-monitor/src/App.tsx`
+- `system-monitor/src/components/MetricCard.tsx`
+- `system-monitor/src/components/ProcessTable.tsx`
+- `system-monitor/src/components/SettingsModal.tsx`
+- `system-monitor/src/test/App.test.tsx`
+
+The preserved patch was independently checked with `git apply --check` against a fresh detached worktree at the canonical `benchmark-baseline` tag (`2ee73b4d2475426982d8e33deeaa2c78791aeb8d`). The check completed successfully without modifying the verification worktree.
+
+The patch is preserved as generated rather than reformatted or whitespace-normalized so that it remains an exact representation of the recorded implementation diff. The SHA-256 above can be used to verify artifact integrity.
+
 ## Final Outcome
 
 **SUCCESS**

@@ -1,0 +1,920 @@
+diff --git a/system-monitor/src/App.css b/system-monitor/src/App.css
+index f90339d..ef7f3ce 100644
+--- a/system-monitor/src/App.css
++++ b/system-monitor/src/App.css
+@@ -1,184 +1,370 @@
+-.counter {
+-  font-size: 16px;
+-  padding: 5px 10px;
+-  border-radius: 5px;
++.visually-hidden {
++  position: absolute;
++  width: 1px;
++  height: 1px;
++  padding: 0;
++  margin: -1px;
++  overflow: hidden;
++  clip: rect(0, 0, 0, 0);
++  white-space: nowrap;
++  border: 0;
++}
++
++.app {
++  --panel-bg: #ffffff;
++  --panel-border: #e5e4e7;
++  --input-bg: #ffffff;
++  --status-normal: #1a7f37;
++  --status-warning: #b45309;
++  --status-critical: #d1242f;
++  --status-normal-bg: rgba(26, 127, 55, 0.12);
++  --status-warning-bg: rgba(180, 83, 9, 0.14);
++  --status-critical-bg: rgba(209, 36, 47, 0.14);
++
++  display: flex;
++  flex-direction: column;
++  gap: 24px;
++  min-height: 100svh;
++  box-sizing: border-box;
++  padding: 24px;
++  background: var(--bg);
++  color: var(--text);
++  text-align: left;
++}
++
++.app.dark {
++  --bg: #16171d;
++  --text: #9ca3af;
++  --text-h: #f3f4f6;
++  --border: #2e303a;
++  --panel-bg: #1c1d24;
++  --panel-border: #2e303a;
++  --input-bg: #23242c;
++  --accent: #c084fc;
++  --status-normal: #4ade80;
++  --status-warning: #fbbf24;
++  --status-critical: #f87171;
++  --status-normal-bg: rgba(74, 222, 128, 0.12);
++  --status-warning-bg: rgba(251, 191, 36, 0.16);
++  --status-critical-bg: rgba(248, 113, 113, 0.16);
++}
++
++.app.light {
++  --bg: #ffffff;
++  --text: #6b6375;
++  --text-h: #08060d;
++  --border: #e5e4e7;
++  --panel-bg: #ffffff;
++  --panel-border: #e5e4e7;
++  --input-bg: #ffffff;
++  --accent: #aa3bff;
++}
++
++* {
++  box-sizing: border-box;
++}
++
++.app button {
++  font: inherit;
++  cursor: pointer;
++}
++
++.app button:focus-visible,
++.app input:focus-visible {
++  outline: 2px solid var(--accent);
++  outline-offset: 2px;
++}
++
++.topbar {
++  display: flex;
++  flex-wrap: wrap;
++  align-items: center;
++  justify-content: space-between;
++  gap: 16px;
++}
++
++.eyebrow {
++  margin: 0 0 4px;
++  font-size: 12px;
++  font-weight: 600;
++  letter-spacing: 0.12em;
+   color: var(--accent);
+-  background: var(--accent-bg);
+-  border: 2px solid transparent;
+-  transition: border-color 0.3s;
+-  margin-bottom: 24px;
++}
+ 
+-  &:hover {
+-    border-color: var(--accent-border);
+-  }
+-  &:focus-visible {
+-    outline: 2px solid var(--accent);
+-    outline-offset: 2px;
+-  }
++.topbar h1 {
++  margin: 0;
++}
++
++.header-actions {
++  display: flex;
++  flex-wrap: wrap;
++  gap: 8px;
+ }
+ 
+-.hero {
+-  position: relative;
++.header-actions button {
++  padding: 8px 16px;
++  border-radius: 8px;
++  border: 1px solid var(--border);
++  background: var(--panel-bg);
++  color: var(--text-h);
++}
+ 
+-  .base,
+-  .framework,
+-  .vite {
+-    inset-inline: 0;
+-    margin: 0 auto;
+-  }
++.metrics-grid {
++  display: grid;
++  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
++  gap: 16px;
++}
+ 
+-  .base {
+-    width: 170px;
+-    position: relative;
+-    z-index: 0;
+-  }
++.metric-card {
++  display: flex;
++  flex-direction: column;
++  gap: 4px;
++  padding: 16px;
++  border-radius: 12px;
++  border: 1px solid var(--panel-border);
++  background: var(--panel-bg);
++}
+ 
+-  .framework,
+-  .vite {
+-    position: absolute;
+-  }
++.metric-card span {
++  font-size: 13px;
++  color: var(--text);
++}
+ 
+-  .framework {
+-    z-index: 1;
+-    top: 34px;
+-    height: 28px;
+-    transform: perspective(2000px) rotateZ(300deg) rotateX(44deg) rotateY(39deg)
+-      scale(1.4);
+-  }
++.metric-card strong {
++  font-size: 28px;
++  color: var(--text-h);
++}
+ 
+-  .vite {
+-    z-index: 0;
+-    top: 107px;
+-    height: 26px;
+-    width: auto;
+-    transform: perspective(2000px) rotateZ(300deg) rotateX(40deg) rotateY(39deg)
+-      scale(0.8);
+-  }
++.metric-card small {
++  align-self: flex-start;
++  padding: 2px 8px;
++  border-radius: 999px;
++  font-size: 12px;
++  text-transform: capitalize;
++}
++
++.metric-card.normal small {
++  color: var(--status-normal);
++  background: var(--status-normal-bg);
++}
++
++.metric-card.warning small {
++  color: var(--status-warning);
++  background: var(--status-warning-bg);
++}
++
++.metric-card.critical small {
++  color: var(--status-critical);
++  background: var(--status-critical-bg);
+ }
+ 
+-#center {
++.process-panel {
+   display: flex;
+   flex-direction: column;
+-  gap: 25px;
+-  place-content: center;
+-  place-items: center;
+-  flex-grow: 1;
+-
+-  @media (max-width: 1024px) {
+-    padding: 32px 20px 24px;
+-    gap: 18px;
+-  }
++  gap: 12px;
++  padding: 16px;
++  border-radius: 12px;
++  border: 1px solid var(--panel-border);
++  background: var(--panel-bg);
+ }
+ 
+-#next-steps {
++.panel-heading {
+   display: flex;
+-  border-top: 1px solid var(--border);
+-  text-align: left;
++  flex-wrap: wrap;
++  align-items: center;
++  justify-content: space-between;
++  gap: 12px;
++}
+ 
+-  & > div {
+-    flex: 1 1 0;
+-    padding: 32px;
+-    @media (max-width: 1024px) {
+-      padding: 24px 20px;
+-    }
+-  }
++.panel-heading h2 {
++  margin: 0;
++}
+ 
+-  .icon {
+-    margin-bottom: 16px;
+-    width: 22px;
+-    height: 22px;
+-  }
++.panel-heading p {
++  margin: 2px 0 0;
++  font-size: 13px;
++  color: var(--text);
++}
+ 
+-  @media (max-width: 1024px) {
+-    flex-direction: column;
+-    text-align: center;
+-  }
++.panel-heading input[type='search'] {
++  padding: 8px 12px;
++  border-radius: 8px;
++  border: 1px solid var(--border);
++  background: var(--input-bg);
++  color: var(--text-h);
++  min-width: 220px;
+ }
+ 
+-#docs {
+-  border-right: 1px solid var(--border);
++.table-wrapper {
++  overflow-x: auto;
++}
+ 
+-  @media (max-width: 1024px) {
+-    border-right: none;
+-    border-bottom: 1px solid var(--border);
+-  }
++table {
++  width: 100%;
++  border-collapse: collapse;
++}
++
++th,
++td {
++  padding: 10px 12px;
++  text-align: left;
++  border-bottom: 1px solid var(--border);
++  white-space: nowrap;
+ }
+ 
+-#next-steps ul {
+-  list-style: none;
++th button {
+   padding: 0;
+-  display: flex;
+-  gap: 8px;
+-  margin: 32px 0 0;
++  border: none;
++  background: none;
++  font-weight: 600;
++  color: var(--text-h);
++}
+ 
+-  .logo {
+-    height: 18px;
+-  }
++table.compact th,
++table.compact td {
++  padding: 4px 8px;
++  font-size: 13px;
++}
+ 
+-  a {
+-    color: var(--text-h);
+-    font-size: 16px;
+-    border-radius: 6px;
+-    background: var(--social-bg);
+-    display: flex;
+-    padding: 6px 12px;
+-    align-items: center;
+-    gap: 8px;
+-    text-decoration: none;
+-    transition: box-shadow 0.3s;
+-
+-    &:hover {
+-      box-shadow: var(--shadow);
+-    }
+-    .button-icon {
+-      height: 18px;
+-      width: 18px;
+-    }
+-  }
++.status-pill {
++  display: inline-block;
++  padding: 2px 10px;
++  border-radius: 999px;
++  font-size: 12px;
++  text-transform: capitalize;
++}
+ 
+-  @media (max-width: 1024px) {
+-    margin-top: 20px;
+-    flex-wrap: wrap;
+-    justify-content: center;
++.status-pill.running {
++  color: var(--status-normal);
++  background: var(--status-normal-bg);
++}
+ 
+-    li {
+-      flex: 1 1 calc(50% - 8px);
+-    }
++.status-pill.sleeping {
++  color: var(--text);
++  background: var(--border);
++}
+ 
+-    a {
+-      width: 100%;
+-      justify-content: center;
+-      box-sizing: border-box;
+-    }
+-  }
++.status-pill.warning {
++  color: var(--status-warning);
++  background: var(--status-warning-bg);
+ }
+ 
+-#spacer {
+-  height: 88px;
+-  border-top: 1px solid var(--border);
+-  @media (max-width: 1024px) {
+-    height: 48px;
+-  }
++.table-empty {
++  padding: 16px 4px;
++  color: var(--text);
++  font-size: 14px;
++}
++
++.modal-backdrop {
++  position: fixed;
++  inset: 0;
++  display: flex;
++  align-items: center;
++  justify-content: center;
++  padding: 16px;
++  background: rgba(0, 0, 0, 0.5);
++  z-index: 10;
+ }
+ 
+-.ticks {
+-  position: relative;
++.modal {
+   width: 100%;
++  max-width: 360px;
++  padding: 20px;
++  border-radius: 12px;
++  background: var(--panel-bg);
++  border: 1px solid var(--panel-border);
++  color: var(--text);
++}
+ 
+-  &::before,
+-  &::after {
+-    content: '';
++.modal-header {
++  display: flex;
++  align-items: center;
++  justify-content: space-between;
++  gap: 12px;
++  margin-bottom: 12px;
++}
++
++.modal-header h2 {
++  margin: 0;
++}
++
++.icon-button {
++  width: 32px;
++  height: 32px;
++  line-height: 1;
++  border-radius: 8px;
++  border: 1px solid var(--border);
++  background: var(--input-bg);
++  color: var(--text-h);
++  font-size: 18px;
++}
++
++.setting-row {
++  display: flex;
++  align-items: center;
++  justify-content: space-between;
++  gap: 12px;
++  padding: 8px 0;
++}
++
++.hint {
++  margin-top: 8px;
++  font-size: 13px;
++  color: var(--text);
++}
++
++@media (max-width: 640px) {
++  .app {
++    padding: 16px;
++    gap: 16px;
++  }
++
++  .panel-heading input[type='search'] {
++    min-width: 0;
++    width: 100%;
++  }
++
++  .table-wrapper table,
++  .table-wrapper thead,
++  .table-wrapper tbody,
++  .table-wrapper tr {
++    display: block;
++    width: 100%;
++  }
++
++  .table-wrapper thead {
+     position: absolute;
+-    top: -4.5px;
+-    border: 5px solid transparent;
++    width: 1px;
++    height: 1px;
++    overflow: hidden;
++    clip: rect(0, 0, 0, 0);
+   }
+ 
+-  &::before {
+-    left: 0;
+-    border-left-color: var(--border);
++  .table-wrapper tr {
++    margin-bottom: 12px;
++    padding: 8px 12px;
++    border: 1px solid var(--panel-border);
++    border-radius: 10px;
+   }
+-  &::after {
+-    right: 0;
+-    border-right-color: var(--border);
++
++  .table-wrapper td {
++    display: flex;
++    align-items: center;
++    justify-content: space-between;
++    gap: 12px;
++    border-bottom: 1px solid var(--border);
++    white-space: normal;
++    text-align: right;
++  }
++
++  .table-wrapper td:last-child {
++    border-bottom: none;
++  }
++
++  .table-wrapper td::before {
++    content: attr(data-label);
++    font-weight: 600;
++    color: var(--text-h);
++    text-align: left;
+   }
+ }
+diff --git a/system-monitor/src/App.tsx b/system-monitor/src/App.tsx
+index e399215..4322f12 100644
+--- a/system-monitor/src/App.tsx
++++ b/system-monitor/src/App.tsx
+@@ -1,4 +1,4 @@
+-import { useState } from 'react'
++import { useId, useMemo, useState } from 'react'
+ import './App.css'
+ import { MetricCard } from './components/MetricCard'
+ import { ProcessTable } from './components/ProcessTable'
+@@ -10,16 +10,17 @@ function App() {
+   const [darkMode, setDarkMode] = useState(true)
+   const [settingsOpen, setSettingsOpen] = useState(false)
+   const [compactMode, setCompactMode] = useState(false)
++  const searchInputId = useId()
+ 
+-  // Intentional benchmark defect:
+-  // search is case-sensitive and repeated unnecessarily.
+-  const visibleProcesses = processes.filter((process) =>
+-    process.name.includes(query),
+-  )
++  const visibleProcesses = useMemo(() => {
++    const normalizedQuery = query.trim().toLowerCase()
++
++    return processes.filter((process) =>
++      process.name.toLowerCase().includes(normalizedQuery),
++    )
++  }, [query])
+ 
+-  const processCount = processes.filter((process) =>
+-    process.name.includes(query),
+-  ).length
++  const processCount = visibleProcesses.length
+ 
+   return (
+     <main className={darkMode ? 'app dark' : 'app light'}>
+@@ -32,6 +33,7 @@ function App() {
+         <div className="header-actions">
+           <button
+             type="button"
++            aria-pressed={darkMode}
+             onClick={() => setDarkMode((value) => !value)}
+           >
+             {darkMode ? 'Light mode' : 'Dark mode'}
+@@ -78,7 +80,11 @@ function App() {
+             <p>{processCount} visible processes</p>
+           </div>
+ 
++          <label className="visually-hidden" htmlFor={searchInputId}>
++            Search processes
++          </label>
+           <input
++            id={searchInputId}
+             type="search"
+             placeholder="Search processes"
+             value={query}
+diff --git a/system-monitor/src/components/MetricCard.tsx b/system-monitor/src/components/MetricCard.tsx
+index 19a7a88..3c7db83 100644
+--- a/system-monitor/src/components/MetricCard.tsx
++++ b/system-monitor/src/components/MetricCard.tsx
+@@ -15,11 +15,9 @@ export function MetricCard({
+ }: MetricCardProps) {
+   let status = 'normal'
+ 
+-  // Intentional benchmark defect:
+-  // exactly warningAt is incorrectly treated as normal.
+-  if (value > criticalAt) {
++  if (value >= criticalAt) {
+     status = 'critical'
+-  } else if (value > warningAt) {
++  } else if (value >= warningAt) {
+     status = 'warning'
+   }
+ 
+diff --git a/system-monitor/src/components/ProcessTable.tsx b/system-monitor/src/components/ProcessTable.tsx
+index 8249ee9..11e26d3 100644
+--- a/system-monitor/src/components/ProcessTable.tsx
++++ b/system-monitor/src/components/ProcessTable.tsx
+@@ -1,4 +1,4 @@
+-import { useState } from 'react'
++import { useMemo, useState } from 'react'
+ import type { ProcessRow } from '../data/processes'
+ 
+ type SortKey = 'pid' | 'name' | 'cpu' | 'memory'
+@@ -8,26 +8,33 @@ type ProcessTableProps = {
+   compact: boolean
+ }
+ 
++const SORT_COLUMNS: Array<{ key: SortKey; label: string }> = [
++  { key: 'pid', label: 'PID' },
++  { key: 'name', label: 'Process' },
++  { key: 'cpu', label: 'CPU %' },
++  { key: 'memory', label: 'Memory MB' },
++]
++
+ export function ProcessTable({ rows, compact }: ProcessTableProps) {
+   const [sortKey, setSortKey] = useState<SortKey>('cpu')
+   const [ascending, setAscending] = useState(false)
+ 
+-  // Intentional benchmark defect:
+-  // sort() mutates the array passed in through props.
+-  const sortedRows = rows.sort((a, b) => {
+-    const left = a[sortKey]
+-    const right = b[sortKey]
++  const sortedRows = useMemo(() => {
++    return [...rows].sort((a, b) => {
++      const left = a[sortKey]
++      const right = b[sortKey]
+ 
+-    if (typeof left === 'string' && typeof right === 'string') {
+-      return ascending
+-        ? left.localeCompare(right)
+-        : right.localeCompare(left)
+-    }
++      if (typeof left === 'string' && typeof right === 'string') {
++        return ascending
++          ? left.localeCompare(right)
++          : right.localeCompare(left)
++      }
+ 
+-    return ascending
+-      ? Number(left) - Number(right)
+-      : Number(right) - Number(left)
+-  })
++      return ascending
++        ? Number(left) - Number(right)
++        : Number(right) - Number(left)
++    })
++  }, [rows, sortKey, ascending])
+ 
+   function handleSort(key: SortKey) {
+     if (sortKey === key) {
+@@ -43,26 +50,32 @@ export function ProcessTable({ rows, compact }: ProcessTableProps) {
+       <table className={compact ? 'compact' : ''}>
+         <thead>
+           <tr>
+-            <th>
+-              <button type="button" onClick={() => handleSort('pid')}>
+-                PID
+-              </button>
+-            </th>
+-            <th>
+-              <button type="button" onClick={() => handleSort('name')}>
+-                Process
+-              </button>
+-            </th>
+-            <th>
+-              <button type="button" onClick={() => handleSort('cpu')}>
+-                CPU %
+-              </button>
+-            </th>
+-            <th>
+-              <button type="button" onClick={() => handleSort('memory')}>
+-                Memory MB
+-              </button>
+-            </th>
++            {SORT_COLUMNS.map(({ key, label }) => (
++              <th
++                key={key}
++                aria-sort={
++                  sortKey === key
++                    ? ascending
++                      ? 'ascending'
++                      : 'descending'
++                    : 'none'
++                }
++              >
++                <button
++                  type="button"
++                  aria-label={`Sort by ${label}${
++                    sortKey === key
++                      ? ascending
++                        ? ', currently ascending'
++                        : ', currently descending'
++                      : ''
++                  }`}
++                  onClick={() => handleSort(key)}
++                >
++                  {label}
++                </button>
++              </th>
++            ))}
+             <th>User</th>
+             <th>Status</th>
+           </tr>
+@@ -71,12 +84,12 @@ export function ProcessTable({ rows, compact }: ProcessTableProps) {
+         <tbody>
+           {sortedRows.map((process) => (
+             <tr key={process.pid}>
+-              <td>{process.pid}</td>
+-              <td>{process.name}</td>
+-              <td>{process.cpu.toFixed(1)}</td>
+-              <td>{process.memory}</td>
+-              <td>{process.user}</td>
+-              <td>
++              <td data-label="PID">{process.pid}</td>
++              <td data-label="Process">{process.name}</td>
++              <td data-label="CPU %">{process.cpu.toFixed(1)}</td>
++              <td data-label="Memory MB">{process.memory}</td>
++              <td data-label="User">{process.user}</td>
++              <td data-label="Status">
+                 <span className={`status-pill ${process.status}`}>
+                   {process.status}
+                 </span>
+@@ -85,6 +98,10 @@ export function ProcessTable({ rows, compact }: ProcessTableProps) {
+           ))}
+         </tbody>
+       </table>
++
++      {sortedRows.length === 0 && (
++        <p className="table-empty">No processes match your search.</p>
++      )}
+     </div>
+   )
+ }
+diff --git a/system-monitor/src/components/SettingsModal.tsx b/system-monitor/src/components/SettingsModal.tsx
+index 18cd6b6..00a1892 100644
+--- a/system-monitor/src/components/SettingsModal.tsx
++++ b/system-monitor/src/components/SettingsModal.tsx
+@@ -1,3 +1,5 @@
++import { useEffect, useId, useRef } from 'react'
++
+ type SettingsModalProps = {
+   open: boolean
+   onClose: () => void
+@@ -5,24 +7,93 @@ type SettingsModalProps = {
+   onCompactModeChange: (value: boolean) => void
+ }
+ 
++const FOCUSABLE_SELECTOR =
++  'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
++
+ export function SettingsModal({
+   open,
+   onClose,
+   compactMode,
+   onCompactModeChange,
+ }: SettingsModalProps) {
++  const headingId = useId()
++  const dialogRef = useRef<HTMLDivElement>(null)
++  const closeButtonRef = useRef<HTMLButtonElement>(null)
++  const previouslyFocusedElement = useRef<HTMLElement | null>(null)
++
++  useEffect(() => {
++    if (!open) {
++      return
++    }
++
++    previouslyFocusedElement.current =
++      document.activeElement instanceof HTMLElement
++        ? document.activeElement
++        : null
++    closeButtonRef.current?.focus()
++
++    function handleKeyDown(event: KeyboardEvent) {
++      if (event.key === 'Escape') {
++        onClose()
++        return
++      }
++
++      if (event.key !== 'Tab' || !dialogRef.current) {
++        return
++      }
++
++      const focusable = Array.from(
++        dialogRef.current.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR),
++      )
++
++      if (focusable.length === 0) {
++        return
++      }
++
++      const first = focusable[0]
++      const last = focusable[focusable.length - 1]
++
++      if (event.shiftKey && document.activeElement === first) {
++        event.preventDefault()
++        last.focus()
++      } else if (!event.shiftKey && document.activeElement === last) {
++        event.preventDefault()
++        first.focus()
++      }
++    }
++
++    document.addEventListener('keydown', handleKeyDown)
++
++    return () => {
++      document.removeEventListener('keydown', handleKeyDown)
++      previouslyFocusedElement.current?.focus()
++    }
++  }, [open, onClose])
++
+   if (!open) {
+     return null
+   }
+ 
+   return (
+-    <div className="modal-backdrop">
+-      <div className="modal">
++    <div className="modal-backdrop" onClick={onClose}>
++      <div
++        className="modal"
++        role="dialog"
++        aria-modal="true"
++        aria-labelledby={headingId}
++        ref={dialogRef}
++        onClick={(event) => event.stopPropagation()}
++      >
+         <div className="modal-header">
+-          <h2>Dashboard Settings</h2>
++          <h2 id={headingId}>Dashboard Settings</h2>
+ 
+-          {/* Intentional benchmark defect: no accessible name */}
+-          <button type="button" className="icon-button" onClick={onClose}>
++          <button
++            type="button"
++            className="icon-button"
++            onClick={onClose}
++            aria-label="Close settings"
++            ref={closeButtonRef}
++          >
+             ×
+           </button>
+         </div>
+diff --git a/system-monitor/src/test/App.test.tsx b/system-monitor/src/test/App.test.tsx
+index 68fc320..34d3c05 100644
+--- a/system-monitor/src/test/App.test.tsx
++++ b/system-monitor/src/test/App.test.tsx
+@@ -1,7 +1,10 @@
+ import { fireEvent, render, screen } from '@testing-library/react'
+-import { describe, expect, it } from 'vitest'
++import { describe, expect, it, vi } from 'vitest'
+ import App from '../App'
+ import { MetricCard } from '../components/MetricCard'
++import { ProcessTable } from '../components/ProcessTable'
++import { SettingsModal } from '../components/SettingsModal'
++import type { ProcessRow } from '../data/processes'
+ 
+ describe('System Monitor benchmark fixture', () => {
+   it('renders the dashboard', () => {
+@@ -39,4 +42,62 @@ describe('System Monitor benchmark fixture', () => {
+ 
+     expect(container.querySelector('.metric-card')).toHaveClass('warning')
+   })
++
++  it('should treat the critical threshold itself as critical', () => {
++    const { container } = render(
++      <MetricCard
++        label="CPU"
++        value={90}
++        warningAt={75}
++        criticalAt={90}
++      />,
++    )
++
++    expect(container.querySelector('.metric-card')).toHaveClass('critical')
++  })
++
++  it('should sort without mutating the rows passed in through props', () => {
++    const rows: ProcessRow[] = [
++      { pid: 1, name: 'b', cpu: 1, memory: 1, user: 'a', status: 'running' },
++      { pid: 2, name: 'a', cpu: 2, memory: 2, user: 'a', status: 'running' },
++    ]
++    const originalOrder = [...rows]
++
++    render(<ProcessTable rows={rows} compact={false} />)
++
++    fireEvent.click(screen.getByRole('button', { name: /sort by process/i }))
++
++    expect(rows).toEqual(originalOrder)
++  })
++
++  it('should give the settings close button an accessible name', () => {
++    render(
++      <SettingsModal
++        open
++        onClose={() => {}}
++        compactMode={false}
++        onCompactModeChange={() => {}}
++      />,
++    )
++
++    expect(
++      screen.getByRole('button', { name: 'Close settings' }),
++    ).toBeInTheDocument()
++  })
++
++  it('should close the settings modal on Escape', () => {
++    const onClose = vi.fn()
++    render(
++      <SettingsModal
++        open
++        onClose={onClose}
++        compactMode={false}
++        onCompactModeChange={() => {}}
++      />,
++    )
++
++    fireEvent.keyDown(document, { key: 'Escape' })
++
++    expect(onClose).toHaveBeenCalledTimes(1)
++  })
+ })
