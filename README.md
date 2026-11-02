@@ -384,4 +384,4 @@ Methodology improvements, reproducibility findings, security reports, and benchm
 
 ## License
 
-Licensed under the [MIT License](LICENSE).
+Licensed under the MIT License.
